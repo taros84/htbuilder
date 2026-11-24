@@ -35,6 +35,15 @@ dependencies {
     ksp("com.htstudio:htbuilder-processor:1.0.7")
 }
 ```
+### 3. Maven (pom.xml):
+
+...xml
+<dependency>
+    <groupId>com.htstudio</groupId>
+    <artifactId>htbuilder-annotations</artifactId>
+    <version>1.0.7</version>
+</dependency>
+...
 
 ## Usage
 
