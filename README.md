@@ -2,7 +2,7 @@
 
 **HtBuilder** is a Kotlin code generation library that automatically generates Builder, Setter, and Getter methods using annotations and [Kotlin Symbol Processing (KSP)](https://github.com/google/ksp).
 
-HtBuilder helps reduce boilerplate code and provides a clean, readable, and fluent API for Kotlin projects, including Android applications.
+HtBuilder reduces boilerplate code and provides a clean, readable, and type-safe API for Kotlin projects, including Android applications.
 
 ## Features
 
@@ -16,12 +16,12 @@ HtBuilder helps reduce boilerplate code and provides a clean, readable, and flue
 - Compile-time processing using KSP.
 - Type-safe generated Kotlin code.
 - Supports Kotlin `apply {}` scope function.
-- Selective code generation through individual annotations.
-- Full code generation with a single `@Data` annotation.
+- Selective code generation using individual annotations.
+- Full code generation using a single `@Data` annotation.
 
 ## Supported Annotations
 
-HtBuilder provides four annotations:
+HtBuilder provides four annotations for controlling code generation.
 
 | Annotation | Builder | Setter | Getter |
 |---|:---:|:---:|:---:|
@@ -125,8 +125,6 @@ account.setUsername("Halil")
 account.setBalance(1500.0)
 ```
 
-The generated Setter methods can be used directly inside Kotlin's `apply {}` scope function.
-
 ### 4. @Getter – Getter Only
 
 The `@Getter` annotation generates only Getter methods.
@@ -153,11 +151,13 @@ val customerId = customer.getId()
 val customerName = customer.getName()
 ```
 
-## Using Setter and Getter with apply
+## Using Setter and Getter with Kotlin apply
 
-HtBuilder supports using generated methods inside Kotlin scope functions.
+HtBuilder supports using generated methods inside Kotlin scope functions such as `apply {}`.
 
-This allows you to initialize and modify objects in a clean and readable way.
+This allows objects to be initialized and modified with a clean and readable syntax.
+
+**Class definition:**
 
 ```kotlin
 @Data
@@ -170,7 +170,7 @@ data class RequestData(
 }
 ```
 
-**Example:**
+**Usage:**
 
 ```kotlin
 val request = RequestData().apply {
@@ -179,23 +179,79 @@ val request = RequestData().apply {
     setPayload(data)
 }
 
+// Getter
 val requestId = request.getId()
 val requestAction = request.getAction()
+val requestPayload = request.getPayload()
 ```
+
+## Builder Example
+
+Instead of manually creating objects using constructors:
+
+```kotlin
+val request = RequestData(
+    id = 52,
+    action = "URL",
+    payload = data
+)
+```
+
+You can use the generated Builder pattern:
+
+```kotlin
+val request = RequestData.builder()
+    .id(52)
+    .action("URL")
+    .payload(data)
+    .build()
+```
+
+The Builder pattern provides a fluent API for creating objects and makes object initialization easier to read and maintain.
+
+## Requirements
+
+HtBuilder uses the following build tool versions:
+
+| Tool | Version |
+|---|---|
+| Gradle | 9.6.0 |
+| Kotlin | 2.3.20 |
+| Kotlin Symbol Processing (KSP) | 2.3.12 |
+
+Additional requirements:
+
+- JDK compatible with Gradle 9.6.0
+- Android Studio or IntelliJ IDEA
+- Kotlin-based Gradle project
 
 ## Installation
 
-### 1. Add the KSP Plugin
+### 1. Configure Kotlin and KSP Plugins
 
-Add the KSP plugin to your module-level `build.gradle.kts`:
+Add the following plugins to your root-level `build.gradle.kts`:
 
 ```kotlin
 plugins {
+    kotlin("jvm") version "2.3.20" apply false
+    id("com.google.devtools.ksp") version "2.3.12" apply false
+}
+```
+
+### 2. Apply Plugins to Your Module
+
+For Kotlin JVM projects, add the following to your module-level `build.gradle.kts`:
+
+```kotlin
+plugins {
+    kotlin("jvm")
     id("com.google.devtools.ksp")
 }
 ```
 
-### 2. Add HtBuilder Dependencies
+For Android projects, apply the appropriate Android application or library plugin together with the compatible Kotlin Android and KSP plugins.
+
+### 3. Add HtBuilder Dependencies
 
 Add the following dependencies to your module-level `build.gradle.kts`:
 
@@ -206,7 +262,33 @@ dependencies {
 }
 ```
 
-### 3. Maven Dependency
+### 4. Configure Maven Repository
+
+Make sure Maven Central is included in your project repositories:
+
+```kotlin
+repositories {
+    mavenCentral()
+}
+```
+
+### 5. Generate Code
+
+Build your project to trigger KSP code generation:
+
+```bash
+./gradlew clean build
+```
+
+On Windows:
+
+```powershell
+.\gradlew clean build
+```
+
+After a successful build, generated Kotlin source files will be available in the KSP generated sources directory.
+
+## Maven Installation
 
 For Maven projects, add the annotations dependency to your `pom.xml`:
 
@@ -218,23 +300,20 @@ For Maven projects, add the annotations dependency to your `pom.xml`:
 </dependency>
 ```
 
-**Note:** The KSP processor must also be configured in your build system to generate code.
-
-## Requirements
-
-- Kotlin
-- Kotlin Symbol Processing (KSP)
-- Gradle
-- Android Studio or IntelliJ IDEA
+**Note:** HtBuilder uses KSP for compile-time code generation. The KSP processor must also be integrated into the build process. Adding the annotations dependency alone does not execute KSP.
 
 ## Published Artifacts
+
+HtBuilder is published under the following Maven coordinates:
 
 | Artifact | Version |
 |---|---|
 | `htdata-annotations` | `1.0.10` |
 | `htdata-processor` | `1.0.10` |
 
-**Maven Group:** `io.github.taros84`
+**Group ID:** `io.github.taros84`
+
+**Repository:** Maven Central
 
 ## License
 
