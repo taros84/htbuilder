@@ -31,31 +31,38 @@ Add the following dependencies to your module-level `build.gradle.kts`:
 
 ```kotlin
 dependencies {
-    implementation("com.htstudio:htbuilder-annotations:1.0.7")
-    ksp("com.htstudio:htbuilder-processor:1.0.7")
+    implementation("io.github.taros84:htdata-annotations:1.0.10")
+    ksp("io.github.taros84:htdata-processor:1.0.10")
 }
 ```
 ### 3. Maven (pom.xml):
 
 ```xml
 <dependency>
-    <groupId>com.htstudio</groupId>
-    <artifactId>htbuilder-annotations</artifactId>
-    <version>1.0.7</version>
+    <groupId>io.github.taros84</groupId>
+    <artifactId>htdata-annotations</artifactId>
+    <version>1.0.10</version>
 </dependency>
 ```
 
 ## Usage
 
-### 1. Import the Builder annotation
+### 1. Import the Builder,Data,Setter,Getter annotation
 
 ```kotlin
-import com.htstudio.builder.Builder
+import io.github.taros84.Data
+or
+import io.github.taros84.Builder
+or
+import io.github.taros84.Setter
+or
+import io.github.taros84.Getter
 ```
 
 ### 2. Annotate your class
 
-Add the `@Builder` annotation to your Kotlin class.
+Add the `@Data` or `@Builder` or `@Setter` or `@Getter` annotation to your Kotlin class.
+Add `@Data` full object import 
 
 **Example:**
 
