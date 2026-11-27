@@ -1,4 +1,29 @@
 # HtBuilder – Kotlin Builder Code Generator
+## Version Compatibility
+
+| Component | Version |
+|---|---|
+| Gradle | **9.6.0** |
+| Kotlin | **2.3.20** |
+| KSP | **2.3.12** |
+| HtBuilder Annotations | **1.0.10** |
+| HtBuilder Processor | **1.0.10** |
+
+### Gradle Plugin Configuration
+
+```kotlin
+plugins {
+    kotlin("jvm") version "2.3.20" apply false
+    id("com.google.devtools.ksp") version "2.3.12" apply false
+}
+```
+
+**Gradle Wrapper:**
+
+```properties
+distributionUrl=https\://services.gradle.org/distributions/gradle-9.6.0-bin.zip
+```
+
 
 **HtBuilder** is a Kotlin code generation library that automatically generates Builder, Setter, and Getter methods using annotations and [Kotlin Symbol Processing (KSP)](https://github.com/google/ksp).
 
